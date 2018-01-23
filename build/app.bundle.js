@@ -18281,9 +18281,13 @@ var _react = __webpack_require__(2);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactDom = __webpack_require__(8);
+var _counter = __webpack_require__(33);
 
-var _reactDom2 = _interopRequireDefault(_reactDom);
+var _counter2 = _interopRequireDefault(_counter);
+
+var _explode = __webpack_require__(34);
+
+var _explode2 = _interopRequireDefault(_explode);
 
 __webpack_require__(28);
 
@@ -18304,26 +18308,49 @@ var Main = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (Main.__proto__ || Object.getPrototypeOf(Main)).call(this));
 
         _this.state = {
-            number: 0
+            number: 30
         };
 
-        setInterval(function () {
-            _this.setState({
-                number: ++_this.state.number
-            });
-        }, 500);
+        (_this.tick = _this.tick.bind(_this))();
         return _this;
     }
 
     _createClass(Main, [{
         key: 'render',
         value: function render() {
-            var n = this.state.number;
-            return _react2.default.createElement(
-                'span',
-                { className: 'number' },
-                n
-            );
+            var number = this.state.number;
+
+
+            var explode = _react2.default.createElement(_explode2.default, { url: "https://media.giphy.com/media/12KiGLydHEdak8/giphy.gif" });
+            var counter = _react2.default.createElement(_counter2.default, { value: number });
+
+            return number > 0 ? counter : explode;
+        }
+    }, {
+        key: 'speak',
+        value: function speak() {
+            var _window = window,
+                speechSynthesis = _window.speechSynthesis;
+
+            var utterance = new SpeechSynthesisUtterance("Time is out! Ahahahaha!");
+
+            speechSynthesis.speak(utterance);
+        }
+    }, {
+        key: 'tick',
+        value: function tick() {
+            var _this2 = this;
+
+            var delayId = setInterval(function () {
+                if (_this2.state.number <= 0) {
+                    clearInterval(delayId);
+                    _this2.speak();
+                } else {
+                    _this2.setState({
+                        number: --_this2.state.number
+                    });
+                }
+            }, 100);
         }
     }]);
 
@@ -18372,7 +18399,7 @@ exports = module.exports = __webpack_require__(30)(false);
 
 
 // module
-exports.push([module.i, "body {\n    color: red;\n}\n\n.number {\n    -webkit-transition: font-size 300ms;\n    -moz-transition: font-size 300ms;\n    -o-transition: font-size 300ms;\n\n    font-size: 100px;\n}", ""]);
+exports.push([module.i, "body {\n    color: red;\n\n    height: 100%;\n    width: 100%;\n}\n\ndiv {\n    position: fixed;\n    top: 50%;\n    left: 50%;\n    transform: translate(-50%, -50%);\n}\n\n.counter {\n    -webkit-transition: font-size 500ms;\n    -moz-transition: font-size 500ms;\n    -o-transition: font-size 500ms;\n\n    font-size: 10px;\n}\n\nimg {\n    width: 1080px;\n    height: auto;\n    vertical-align: center;\n}", ""]);
 
 // exports
 
@@ -18925,6 +18952,117 @@ module.exports = function (css) {
 	return fixedCss;
 };
 
+
+/***/ }),
+/* 33 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(2);
+
+var _react2 = _interopRequireDefault(_react);
+
+__webpack_require__(28);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Counter = function (_React$Component) {
+    _inherits(Counter, _React$Component);
+
+    function Counter(props) {
+        _classCallCheck(this, Counter);
+
+        var _this = _possibleConstructorReturn(this, (Counter.__proto__ || Object.getPrototypeOf(Counter)).call(this, props));
+
+        console.log("constructor");
+        return _this;
+    }
+
+    _createClass(Counter, [{
+        key: 'render',
+        value: function render() {
+            var value = this.props.value;
+
+            var fontColor = value < 10 ? 'red' : 'gray';
+            var fontSize = 600 - value * 20;
+
+            var result = _react2.default.createElement(
+                'div',
+                { id: 'counterDiv', className: 'counter', style: { fontSize: fontSize, color: fontColor } },
+                value
+            );
+
+            return result;
+        }
+    }]);
+
+    return Counter;
+}(_react2.default.Component);
+
+exports.default = Counter;
+
+/***/ }),
+/* 34 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(2);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Explode = function (_React$Component) {
+    _inherits(Explode, _React$Component);
+
+    function Explode(props) {
+        _classCallCheck(this, Explode);
+
+        return _possibleConstructorReturn(this, (Explode.__proto__ || Object.getPrototypeOf(Explode)).call(this, props));
+    }
+
+    _createClass(Explode, [{
+        key: 'render',
+        value: function render() {
+
+            var result = _react2.default.createElement('img', { src: this.props.url });
+
+            return result;
+        }
+    }]);
+
+    return Explode;
+}(_react2.default.Component);
+
+exports.default = Explode;
 
 /***/ })
 /******/ ]);
