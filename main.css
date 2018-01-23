@@ -1,0 +1,11 @@
+body {
+    color: red;
+}
+
+.number {
+    -webkit-transition: font-size 300ms;
+    -moz-transition: font-size 300ms;
+    -o-transition: font-size 300ms;
+
+    font-size: 100px;
+}
